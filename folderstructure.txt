@@ -1,0 +1,23 @@
+mvc-folder-structure
+├── src
+│   ├── config
+│   │   ├── initTables.js
+│   ├── controllers
+│   │	├── playerController.js
+│   │	├── pokedexController.js
+│   │	├── pokemonController.js
+│   ├── models
+│   │   ├── playerModel.js
+│   │   ├── pokedexModel.js
+│   │   ├── pokemonModel.js
+│   ├── routes
+│   │	├── mainRoutes.js
+│   │	├── playerRoutes.js
+│   │	├── pokedexRoutes.js
+│   │	├── pokemonRoutes.js
+│   ├── services
+│   │   ├── db.js
+│   ├── app.js
+├── .gitignore
+├── package.json
+├── index.js
