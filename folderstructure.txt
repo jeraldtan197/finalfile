@@ -21,3 +21,9 @@ mvc-folder-structure
 ├── .gitignore
 ├── package.json
 ├── index.js
+
+
+to check , git remote -v 
+to remove , git remote remove origin 
+to add git remote add origin (url)
+then push manually 
