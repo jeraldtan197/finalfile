@@ -1,0 +1,440 @@
+-- Selecting all users
+SELECT * FROM User;
+
+-- Selecting all trees
+SELECT * FROM Tree;
+
+-- Selecting all trees for a specific user
+SELECT * FROM Tree WHERE user_id = 1;
+
+-- Updating the name of a user
+UPDATE User SET name = 'Ash Ketchum' WHERE id = 1;
+
+-- Updating the age of a specific tree
+UPDATE Tree SET age = 5 WHERE id = 1;
+
+-- Deleting a user by id
+DELETE FROM User WHERE id = 4;
+
+-- Deleting a tree by id
+DELETE FROM Tree WHERE id = 15;
+
+-- Adding a new column to the Tree table
+ALTER TABLE Tree ADD COLUMN location TEXT;
+
+-- Dropping a column from the Tree table
+ALTER TABLE Tree DROP COLUMN location;
+
+-- Renaming a column in the User table
+ALTER TABLE User RENAME COLUMN name TO username;
+
+-- Dropping the Tree table
+DROP TABLE Tree;
+
+-- Dropping the User table
+DROP TABLE User;
+
+-- Creating an index on the Tree table for species
+CREATE INDEX idx_species ON Tree(species);
+
+-- Dropping the index on the Tree table
+DROP INDEX idx_species ON Tree;
+
+-- Selecting the average age of trees for a specific user
+SELECT AVG(age) AS avg_age FROM Tree WHERE user_id = 3;
+
+-- Selecting the count of trees for each user
+SELECT user_id, COUNT(*) AS tree_count FROM Tree GROUP BY user_id;
+
+-- Selecting the maximum height of trees
+SELECT MAX(height) AS max_height FROM Tree;
+
+-- Selecting the minimum age of trees
+SELECT MIN(age) AS min_age FROM Tree;
+
+-- Selecting the sum of ages of all trees
+SELECT SUM(age) AS total_age FROM Tree;
+
+-- Joining User and Tree tables to get user names and their trees
+SELECT User.name, Tree.species, Tree.age FROM User
+JOIN Tree ON User.id = Tree.user_id;
+
+-- Selecting trees that were watered in the last 7 days
+SELECT * FROM Tree WHERE watered_on >= DATE_SUB(CURDATE(), INTERVAL 7 DAY);
+
+-- Inserting a new tree with a specific watering date
+INSERT INTO Tree (species, age, height, watered_on, user_id) VALUES ('Pine', 3, 6, '2024-05-25', 2);
+
+-- Selecting trees sorted by height in descending order
+SELECT * FROM Tree ORDER BY height DESC;
+
+-- Selecting distinct species of trees
+SELECT DISTINCT species FROM Tree;
+
+-- Counting the number of distinct species
+SELECT COUNT(DISTINCT species) AS distinct_species_count FROM Tree;
+
+
+-- Selecting all users
+SELECT * FROM User;
+
+-- Selecting all trees
+SELECT * FROM Tree;
+
+-- Selecting all trees for a specific user
+SELECT * FROM Tree WHERE user_id = 1;
+
+-- Updating the name of a user
+UPDATE User SET name = 'Ash Ketchum' WHERE id = 1;
+
+-- Updating the age of a specific tree
+UPDATE Tree SET age = 5 WHERE id = 1;
+
+-- Deleting a user by id
+DELETE FROM User WHERE id = 4;
+
+-- Deleting a tree by id
+DELETE FROM Tree WHERE id = 15;
+
+-- Adding a new column to the Tree table
+ALTER TABLE Tree ADD COLUMN location TEXT;
+
+-- Dropping a column from the Tree table
+ALTER TABLE Tree DROP COLUMN location;
+
+-- Renaming a column in the User table
+ALTER TABLE User RENAME COLUMN name TO username;
+
+-- Dropping the Tree table
+DROP TABLE Tree;
+
+-- Dropping the User table
+DROP TABLE User;
+
+-- Creating an index on the Tree table for species
+CREATE INDEX idx_species ON Tree(species);
+
+-- Dropping the index on the Tree table
+DROP INDEX idx_species ON Tree;
+
+-- Selecting the average age of trees for a specific user
+SELECT AVG(age) AS avg_age FROM Tree WHERE user_id = 3;
+
+-- Selecting the count of trees for each user
+SELECT user_id, COUNT(*) AS tree_count FROM Tree GROUP BY user_id;
+
+-- Selecting the maximum height of trees
+SELECT MAX(height) AS max_height FROM Tree;
+
+-- Selecting the minimum age of trees
+SELECT MIN(age) AS min_age FROM Tree;
+
+-- Selecting the sum of ages of all trees
+SELECT SUM(age) AS total_age FROM Tree;
+
+-- Joining User and Tree tables to get user names and their trees
+SELECT User.name, Tree.species, Tree.age FROM User
+JOIN Tree ON User.id = Tree.user_id;
+
+-- Selecting trees that were watered in the last 7 days
+SELECT * FROM Tree WHERE watered_on >= DATE_SUB(CURDATE(), INTERVAL 7 DAY);
+
+-- Inserting a new tree with a specific watering date
+INSERT INTO Tree (species, age, height, watered_on, user_id) VALUES ('Pine', 3, 6, '2024-05-25', 2);
+
+-- Selecting trees sorted by height in descending order
+SELECT * FROM Tree ORDER BY height DESC;
+
+-- Selecting distinct species of trees
+SELECT DISTINCT species FROM Tree;
+
+-- Counting the number of distinct species
+SELECT COUNT(DISTINCT species) AS distinct_species_count FROM Tree;
+
+-- Selecting specific columns from User table
+SELECT id, name FROM User;
+
+-- Selecting specific columns from Tree table
+SELECT id, species, height FROM Tree;
+
+-- Selecting users who have planted a tree
+SELECT DISTINCT User.name FROM User
+JOIN Tree ON User.id = Tree.user_id;
+
+-- Selecting users along with the count of trees they have planted
+SELECT User.name, COUNT(Tree.id) AS tree_count FROM User
+LEFT JOIN Tree ON User.id = Tree.user_id
+GROUP BY User.id;
+
+-- Selecting trees with age greater than a certain value
+SELECT * FROM Tree WHERE age > 5;
+
+-- Selecting trees with height between two values
+SELECT * FROM Tree WHERE height BETWEEN 5 AND 10;
+
+-- Selecting trees with a specific species name using LIKE
+SELECT * FROM Tree WHERE species LIKE 'O%';
+
+-- Selecting the average, maximum, and minimum age of trees
+SELECT AVG(age) AS avg_age, MAX(age) AS max_age, MIN(age) AS min_age FROM Tree;
+
+-- Selecting trees and ordering by age and height
+SELECT * FROM Tree ORDER BY age ASC, height DESC;
+
+-- Counting the number of trees per species
+SELECT species, COUNT(*) AS species_count FROM Tree GROUP BY species;
+
+-- Selecting the top 5 tallest trees
+SELECT * FROM Tree ORDER BY height DESC LIMIT 5;
+
+-- Updating multiple columns in Tree table
+UPDATE Tree SET age = 10, height = 20 WHERE id = 3;
+
+-- Deleting all trees for a specific user
+DELETE FROM Tree WHERE user_id = 2;
+
+-- Deleting trees older than a specific age
+DELETE FROM Tree WHERE age > 10;
+
+-- Creating a composite index on Tree table
+CREATE INDEX idx_species_age ON Tree(species, age);
+
+-- Dropping the composite index on Tree table
+DROP INDEX idx_species_age ON Tree;
+
+-- Selecting trees along with the date difference between planted_on and watered_on
+SELECT *, DATEDIFF(watered_on, planted_on) AS days_to_water FROM Tree;
+
+-- Creating a view to simplify complex queries
+CREATE VIEW UserTrees AS
+SELECT User.name AS user_name, Tree.species, Tree.age, Tree.height
+FROM User
+JOIN Tree ON User.id = Tree.user_id;
+
+-- Selecting data from the view
+SELECT * FROM UserTrees;
+
+-- Dropping the view
+DROP VIEW UserTrees;
+
+-- Creating a stored procedure to update tree height
+DELIMITER //
+CREATE PROCEDURE UpdateTreeHeight(IN treeId INT, IN newHeight INT)
+BEGIN
+    UPDATE Tree SET height = newHeight WHERE id = treeId;
+END //
+DELIMITER ;
+
+-- Calling the stored procedure
+CALL UpdateTreeHeight(3, 25);
+
+-- Creating a stored function to calculate average tree height
+DELIMITER //
+CREATE FUNCTION AverageTreeHeight() RETURNS FLOAT
+BEGIN
+    DECLARE avgHeight FLOAT;
+    SELECT AVG(height) INTO avgHeight FROM Tree;
+    RETURN avgHeight;
+END //
+DELIMITER ;
+
+-- Using the stored function
+SELECT AverageTreeHeight();
+
+-- Creating a trigger to automatically update the watered_on date
+DELIMITER //
+CREATE TRIGGER before_tree_update
+BEFORE UPDATE ON Tree
+FOR EACH ROW
+BEGIN
+    SET NEW.watered_on = NOW();
+END //
+DELIMITER ;
+
+-- Inserting data to test the trigger
+UPDATE Tree SET species = 'New Species' WHERE id = 1;
+
+-- Creating a temporary table for intermediate calculations
+CREATE TEMPORARY TABLE TempTree AS
+SELECT * FROM Tree WHERE height > 5;
+
+-- Selecting from the temporary table
+SELECT * FROM TempTree;
+
+-- Dropping the temporary table
+DROP TEMPORARY TABLE TempTree;
+
+-- Selecting trees planted in the last 30 days
+SELECT * FROM Tree WHERE planted_on >= DATE_SUB(CURDATE(), INTERVAL 30 DAY);
+
+-- Updating data with a subquery
+UPDATE Tree SET age = age + 1 WHERE id IN (SELECT id FROM Tree WHERE age < 5);
+
+-- Using a subquery in the SELECT statement
+SELECT id, species, (SELECT name FROM User WHERE User.id = Tree.user_id) AS owner_name
+FROM Tree;
+
+-- Selecting trees with a CASE statement
+SELECT id, species, 
+CASE
+    WHEN age < 5 THEN 'Young'
+    WHEN age BETWEEN 5 AND 10 THEN 'Mature'
+    ELSE 'Old'
+END AS tree_age_category
+FROM Tree;
+
+-- Creating a JSON column
+ALTER TABLE Tree ADD COLUMN attributes JSON;
+
+-- Inserting JSON data
+UPDATE Tree SET attributes = JSON_OBJECT('health', 'good', 'fruiting', 'yes') WHERE id = 1;
+
+-- Selecting and parsing JSON data
+SELECT id, species, attributes->>'$.health' AS health_status FROM Tree;
+
+-- Creating a full-text index
+CREATE FULLTEXT INDEX idx_species_fulltext ON Tree(species);
+
+-- Performing a full-text search
+SELECT * FROM Tree WHERE MATCH(species) AGAINST ('Oak' IN NATURAL LANGUAGE MODE);
+
+-- Using UNION to combine results from two queries
+SELECT name FROM User
+UNION
+SELECT species AS name FROM Tree;
+
+-- Using INTERSECT to find common elements (not directly supported in MySQL, requires workaround)
+SELECT name FROM User
+WHERE name IN (SELECT species FROM Tree);
+
+-- Using EXCEPT to find elements in one set and not the other (not directly supported in MySQL, requires workaround)
+SELECT name FROM User
+WHERE name NOT IN (SELECT species FROM Tree);
+
+
+-- Calculate the average age of all trees
+SELECT AVG(age) AS avg_age FROM Tree;
+
+-- Calculate the average height of trees for each user
+SELECT user_id, AVG(height) AS avg_height
+FROM Tree
+GROUP BY user_id;
+
+-- Select users along with the average age of their trees
+SELECT User.name, AVG(Tree.age) AS avg_tree_age
+FROM User
+INNER JOIN Tree ON User.id = Tree.user_id
+GROUP BY User.id;
+
+-- Select users along with the total number of trees and average height of their trees
+SELECT User.name, COUNT(Tree.id) AS tree_count, AVG(Tree.height) AS avg_tree_height
+FROM User
+INNER JOIN Tree ON User.id = Tree.user_id
+GROUP BY User.id;
+
+-- Select users who have planted more than 5 trees, along with the average age of their trees
+SELECT User.name, COUNT(Tree.id) AS tree_count, AVG(Tree.age) AS avg_tree_age
+FROM User
+INNER JOIN Tree ON User.id = Tree.user_id
+GROUP BY User.id
+HAVING tree_count > 5;
+
+-- Select trees along with their owner's name and the average age of all trees owned by that user
+SELECT Tree.id, Tree.species, Tree.age, User.name, AVG(Tree.age) OVER (PARTITION BY Tree.user_id) AS avg_user_tree_age
+FROM Tree
+INNER JOIN User ON Tree.user_id = User.id;
+
+-- Select users and the average age of trees they planted in the last year
+SELECT User.name, AVG(Tree.age) AS avg_tree_age
+FROM User
+INNER JOIN Tree ON User.id = Tree.user_id
+WHERE Tree.planted_on >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR)
+GROUP BY User.id;
+
+-- Select users and the average height of trees they have planted in the last month
+SELECT User.name, AVG(Tree.height) AS avg_tree_height
+FROM User
+INNER JOIN Tree ON User.id = Tree.user_id
+WHERE Tree.planted_on >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+GROUP BY User.id;
+
+-- Select users, the species of the oldest tree they planted, and the average age of their trees
+SELECT User.name, (SELECT species FROM Tree WHERE user_id = User.id ORDER BY age DESC LIMIT 1) AS oldest_tree_species, AVG(Tree.age) AS avg_tree_age
+FROM User
+INNER JOIN Tree ON User.id = Tree.user_id
+GROUP BY User.id;
+
+-- Select trees with their owner's name and average height of trees of the same species
+SELECT Tree.id, Tree.species, Tree.height, User.name, AVG(Tree.height) OVER (PARTITION BY Tree.species) AS avg_species_height
+FROM Tree
+INNER JOIN User ON Tree.user_id = User.id;
+
+-- Calculate the overall average height of trees for each user and the average height of all trees
+SELECT User.name, AVG(Tree.height) AS avg_user_tree_height, (SELECT AVG(height) FROM Tree) AS overall_avg_height
+FROM User
+INNER JOIN Tree ON User.id = Tree.user_id
+GROUP BY User.id;
+
+-- Select users with the average age of their trees and the total number of species they have planted
+SELECT User.name, AVG(Tree.age) AS avg_tree_age, COUNT(DISTINCT Tree.species) AS species_count
+FROM User
+INNER JOIN Tree ON User.id = Tree.user_id
+GROUP BY User.id;
+
+-- Select users with the average height of trees they have watered in the last week
+SELECT User.name, AVG(Tree.height) AS avg_tree_height
+FROM User
+INNER JOIN Tree ON User.id = Tree.user_id
+WHERE Tree.watered_on >= DATE_SUB(CURDATE(), INTERVAL 1 WEEK)
+GROUP BY User.id;
+
+-- Select users and the maximum, minimum, and average height of their trees
+SELECT User.name, MAX(Tree.height) AS max_tree_height, MIN(Tree.height) AS min_tree_height, AVG(Tree.height) AS avg_tree_height
+FROM User
+INNER JOIN Tree ON User.id = Tree.user_id
+GROUP BY User.id;
+
+-- Select the average age of trees per species and the number of users who have planted each species
+SELECT Tree.species, AVG(Tree.age) AS avg_species_age, COUNT(DISTINCT Tree.user_id) AS user_count
+FROM Tree
+GROUP BY Tree.species;
+
+-- Select trees and the average height of all trees owned by the same user
+SELECT Tree.id, Tree.species, Tree.height, User.name, AVG(Tree.height) OVER (PARTITION BY Tree.user_id) AS avg_user_height
+FROM Tree
+INNER JOIN User ON Tree.user_id = User.id;
+
+-- Select the average age of trees planted by users who have planted at least 3 different species
+SELECT User.name, AVG(Tree.age) AS avg_tree_age
+FROM User
+INNER JOIN Tree ON User.id = Tree.user_id
+WHERE User.id IN (
+    SELECT user_id FROM Tree GROUP BY user_id HAVING COUNT(DISTINCT species) >= 3
+)
+GROUP BY User.id;
+
+-- Select users and the average height of their trees, only including trees that are older than 2 years
+SELECT User.name, AVG(Tree.height) AS avg_tree_height
+FROM User
+INNER JOIN Tree ON User.id = Tree.user_id
+WHERE Tree.age > 2
+GROUP BY User.id;
+
+-- Select the average age of trees for each species, only including trees that were watered in the last month
+SELECT Tree.species, AVG(Tree.age) AS avg_species_age
+FROM Tree
+WHERE Tree.watered_on >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+GROUP BY Tree.species;
+
+-- Select users with the average age and height of their trees, excluding trees that are younger than 1 year
+SELECT User.name, AVG(Tree.age) AS avg_tree_age, AVG(Tree.height) AS avg_tree_height
+FROM User
+INNER JOIN Tree ON User.id = Tree.user_id
+WHERE Tree.age > 1
+GROUP BY User.id;
+
+-- Select the average age of trees per user and the total height of all their trees
+SELECT User.name, AVG(Tree.age) AS avg_tree_age, SUM(Tree.height) AS total_tree_height
+FROM User
+INNER JOIN Tree ON User.id = Tree.user_id
+GROUP BY User.id;

@@ -1,0 +1,500 @@
+MySQL statement 
+
+ORDER BY ====================================
+
+SELECT FROM (column_name)
+FROM (table_name)
+ORDER BY (column_name) ASC/DESC
+
+e.g 
+
+SELECT * FROM Customers
+ORDER BY Country DESC;
+
+SELECT * FROM Customers
+ORDER BY Country ASC, CustomerName DESC;
+
+==============================================
+
+
+
+LIMIT =========================================
+
+SELECT (column_name[s])
+FROM (table_name)
+WHERE (condition)
+LIMIT (number)
+
+e.g 
+
+SELECT * FROM Customers
+LIMIT 3;
+
+SELECT * FROM Customers
+LIMIT 3 OFFSET 3;  // return 3 records and start on record 4 onwards
+
+SELECT * FROM Customers
+WHERE Country='Germany'
+LIMIT 3;
+
+================================================
+
+
+
+MIN / MAX ========================================
+
+SELECT MIN (column_name)
+FROM (table_name)
+WHERE (condition)
+
+SELECT MAX (column_name)
+FROM (table_name)
+WHERE (condition)
+
+e.g 
+SELECT MIN(Price) AS SmallestPrice
+FROM Products;   
+
+// results displayed will have SmallestPrice as the column name and the min price as the results/value
+
+SELECT MAX(Price) AS LargestPrice
+FROM Products;
+
+// results displayed will have LargestPrice as the column name and the max price as the results/value
+
+=====================================================
+
+
+
+COUNT / AVG / SUM =====================================
+
+SELECT COUNT (column_name)
+FROM (table_name)
+WHERE (condition)
+
+SELECT AVG (column_name)
+FROM (table_name)
+WHERE (condition)
+
+SELECT SUM (column_name)
+FROM (table_name)
+WHERE (condition)
+
+
+e.g
+
+SELECT COUNT(ProductID)
+FROM Products;
+
+SELECT AVG(Price)
+FROM Products;
+
+SELECT SUM(Quantity)
+FROM OrderDetails;
+
+======================================================================
+
+
+
+LIKE ======================================================
+
+SELECT (column1,2,...)
+FROM (table_name)
+WHERE (columnN) LIKE (pattern)
+
+
+The percent sign (%) represents zero, one, or multiple characters
+The underscore sign (_) represents one, single character
+
+e.g 
+
+SELECT * FROM Customers
+WHERE CustomerName LIKE 'a%'; // start w a
+
+SELECT * FROM Customers
+WHERE CustomerName LIKE '%a'; // end w a
+
+SELECT * FROM Customers
+WHERE CustomerName LIKE '%or%'; // has 'or' in any position
+
+SELECT * FROM Customers
+WHERE CustomerName LIKE '_r%'; // has 'r' in the second postion
+
+SELECT * FROM Customers
+WHERE CustomerName LIKE 'a_%_%'; // has 'a' and at least 3 characer
+
+SELECT * FROM Customers
+WHERE ContactName LIKE 'a%o'; // start with 'a' and end with 'o'
+
+SELECT * FROM Customers
+WHERE CustomerName NOT LIKE 'a%'; // does not start with 'o'
+
+======================================================================
+
+
+
+finding current date, time and both at once================================
+
+CURRENT_DATE() == display current date
+
+CURRENT_TIME() == display current time
+
+NOW() == display both current date and time
+
+e.g
+
+CREATE TABLE test(     // creating table
+	my_date DATE,
+	my_time TIME,
+	my_daytime DATETIME
+);
+
+SELECT * FROM test; // will just have the columns with no value in it
+
+INSER INTO test
+VALUES(CURRENT_DATE(), CURRENT_TIME(), NOW());
+
+SELECT * FROM test; // now table will have the values of date time and both in the respective columns
+
+if u want to just display yest
+
+VALUES(CURRENT_DATE() - 1 , NULL, NULL);
+
+same thing if want to display tmr only just change to +1
+
+if want to change the time can add or subtract seconds
+
+==============================================================================
+
+
+
+if want to add constraints like unique and check============================
+
+ALTER TABLE (table_name)
+ADD CONSTRAINT (unique name for contraint) CHECK(condition);
+
+e.g
+ALTER TABLE employees
+ADD CONSTRAINT chk_hourly_pay CHECK (hourly_pay >= 10.00)
+
+cause error if condition is not met
+
+ALTER TABLE (table_name)
+ADD CONSTRAINT
+UNIQUE(column_name);
+
+e.g
+ALTER TABLE Persons
+ADD UNIQUE (ID);
+
+ALTER TABLE Persons
+ADD CONSTRAINT UC_Person UNIQUE (ID,LastName);
+
+cause an error if there is duplicate name
+
+if want to delete check 
+
+ALTER TABLE (table_name)
+DROP CHECK (name of CHECK constraint);
+
+e.g
+ALTER TABLE employees
+DROP CHECK chk_hourly_pay
+
+if want to delete unique constraint
+
+e.g 
+ALTER TABLE Persons
+DROP INDEX UC_Person;
+
+===============================================================================
+
+
+
+AND , OR , NOT ==============================================================
+
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition1 AND condition2 AND condition3 ...; // must fulfil both condition
+
+e.g 
+
+SELECT * FROM Customers
+WHERE Country = 'Germany' AND City = 'Berlin';
+
+
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition1 OR condition2 OR condition3 ...;  // filfil 1 will do
+
+e.g
+
+SELECT * FROM Customers
+WHERE City = 'Berlin' OR City = 'Stuttgart';
+
+SELECT * FROM Customers
+WHERE Country = 'Germany' OR Country = 'Spain';
+
+
+
+SELECT column1, column2, ...
+FROM table_name
+WHERE NOT condition;
+
+e.g 
+
+SELECT * FROM Customers
+WHERE NOT Country = 'Germany';
+
+=============================================================================
+
+
+
+IN ==========================================================================
+
+
+SELECT column_name(s)
+FROM table_name
+WHERE column_name IN (value1, value2, ...);
+
+e.g
+
+SELECT * FROM Customers
+WHERE Country IN ('Germany', 'France', 'UK');
+
+SELECT * FROM Customers
+WHERE Country NOT IN ('Germany', 'France', 'UK');
+
+
+SELECT column_name(s)
+FROM table_name
+WHERE column_name IN (SELECT STATEMENT);
+
+e.g
+
+SELECT * FROM Customers
+WHERE Country IN (SELECT Country FROM Suppliers);
+
+===============================================================================
+
+
+
+BETWEEN =======================================================================
+
+SELECT column_name(s)
+FROM table_name
+WHERE column_name BETWEEN value1 AND value2;
+
+e.g 
+
+SELECT * FROM Products
+WHERE Price BETWEEN 10 AND 20;
+
+
+SELECT * FROM Products
+WHERE Price BETWEEN 10 AND 20
+AND CategoryID NOT IN (1,2,3); 
+
+// showing all products where the price is btwn 10 and 20 inclusively and the category id is not 1 2 or 3
+
+SELECT * FROM Products
+WHERE ProductName BETWEEN 'Carnarvon Tigers' AND 'Mozzarella di Giovanni'
+ORDER BY ProductName;
+
+// display all productname data btwn carnarvon tigers and mozzarella di giovanni and is arranged in alphabetical sequence 
+
+================================================================================
+
+
+
+
+AS ==============================================================================
+
+
+SELECT column_name AS alias_name
+FROM table_name;
+
+e.g
+
+SELECT CustomerName AS Customer, ContactName AS "Contact Person"
+FROM Customers;
+
+// if the alias require a spacing need use " " or ' ' 
+
+SELECT CustomerName, CONCAT_WS(', ', Address, PostalCode, City, Country) AS Address
+FROM Customers;
+
+// CONCAT_WS combines thw 4 data into 1 and put in under the Address column
+
+
+SELECT column_name(s)
+FROM table_name AS alias_name;
+
+e.g 
+
+SELECT o.OrderID, o.OrderDate, c.CustomerName
+FROM Customers AS c, Orders AS o
+WHERE c.CustomerName='Around the Horn' AND c.CustomerID=o.CustomerID;
+
+SELECT Orders.OrderID, Orders.OrderDate, Customers.CustomerName
+FROM Customers, Orders
+WHERE Customers.CustomerName='Around the Horn' AND Customers.CustomerID=Orders.CustomerID;
+
+// if dw use alias
+
+====================================================================================
+
+
+
+JOIN =====================================================================================
+
+(INNER) JOIN: Returns records that have matching values in both tables
+LEFT (OUTER) JOIN: Returns all records from the left table, and the matched records from the right table
+RIGHT (OUTER) JOIN: Returns all records from the right table, and the matched records from the left table
+FULL (OUTER) JOIN: Returns all records when there is a match in either left or right table
+
+//////////////////////////////////////////
+
+INNER JOIN:
+
+SELECT column_name(s)
+FROM table1
+INNER JOIN table2
+ON table1.column_name = table2.column_name;
+
+e.g 
+
+SELECT Products.ProductID, Products.ProductName, Categories.CategoryName
+FROM Products
+INNER JOIN Categories ON Products.CategoryID = Categories.CategoryID;
+
+SELECT Products.ProductID, Products.ProductName, Categories.CategoryName
+FROM Products
+JOIN Categories ON Products.CategoryID = Categories.CategoryID;
+
+// data where customer id matches each other from the 2 tables
+// join and inner join return the same result since inner is the default join type
+
+
+example of how code will look like if join 3 tables 
+
+SELECT Orders.OrderID, Customers.CustomerName, Shippers.ShipperName
+FROM ((Orders
+INNER JOIN Customers ON Orders.CustomerID = Customers.CustomerID)
+INNER JOIN Shippers ON Orders.ShipperID = Shippers.ShipperID);
+
+///////////////////////////////////////////////////
+
+
+LEFT JOIN
+
+
+SELECT column_name(s)
+FROM table1
+LEFT JOIN table2
+ON table1.column_name = table2.column_name;	
+
+e.g 
+
+SELECT Customers.CustomerName, Orders.OrderID
+FROM Customers
+LEFT JOIN Orders ON Customers.CustomerID = Orders.CustomerID
+ORDER BY Customers.CustomerName;
+
+// all records and data from CustomerName in the left table (Customer) will be shown even if there is no matching data but only data from OrderID that has matching CustomerID will be displayed
+
+////////////////////////////////////////////////////////////
+
+
+RIGHT JOIN
+
+SELECT column_name(s)
+FROM table1
+RIGHT JOIN table2
+ON table1.column_name = table2.column_name;
+
+e.g
+
+SELECT Orders.OrderID, Employees.LastName, Employees.FirstName
+FROM Orders
+RIGHT JOIN Employees ON Orders.EmployeeID = Employees.EmployeeID
+ORDER BY Orders.OrderID;
+
+// same as left join but now all data from right table is shown even if no match
+
+//////////////////////////////////////////////////////////////////////////
+
+
+FULL JOIN
+
+SELECT column_name(s)
+FROM table1
+FULL OUTER JOIN table2
+ON table1.column_name = table2.column_name
+WHERE condition;
+
+e.g
+
+SELECT Customers.CustomerName, Orders.OrderID
+FROM Customers
+FULL OUTER JOIN Orders ON Customers.CustomerID=Orders.CustomerID
+ORDER BY Customers.CustomerName;
+
+// show data from both table even if no match
+// value will be null if there is no data in the table for the specific column being selected
+//  So, if there are rows in "Customers" that do not have matches in "Orders", or if there are rows in "Orders" that do not have matches in "Customers", those rows will be listed as well.
+
+===============================================================================
+
+UNION ===========================================================
+
+SELECT column_name(s) FROM table1
+UNION
+SELECT column_name(s) FROM table2;  // only distinct values
+
+
+SELECT column_name(s) FROM table1
+UNION ALL
+SELECT column_name(s) FROM table2; //duplicate values also
+
+e.g
+
+SELECT City FROM Customers
+UNION
+SELECT City FROM Suppliers
+ORDER BY City;
+
+SELECT City FROM Customers
+UNION ALL
+SELECT City FROM Suppliers
+ORDER BY City;
+
+=================================================================================
+
+GROUP BY ========================================================================
+
+SELECT column_name(s)
+FROM table_name
+WHERE condition
+GROUP BY column_name(s)
+ORDER BY column_name(s);
+
+e.g
+
+SELECT COUNT(CustomerID), Country
+FROM Customers
+GROUP BY Country;
+
+SELECT COUNT(CustomerID), Country
+FROM Customers
+GROUP BY Country
+ORDER BY COUNT(CustomerID) DESC;
+
+// data is arranged base on desc count(customerid)
+
+
+SELECT Shippers.ShipperName, COUNT(Orders.OrderID) AS NumberOfOrders FROM Orders
+LEFT JOIN Shippers ON Orders.ShipperID = Shippers.ShipperID
+GROUP BY ShipperName;
+
+// data is arranged base on shipperName

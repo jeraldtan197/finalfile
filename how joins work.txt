@@ -1,0 +1,44 @@
+How INNER JOIN Works
+An INNER JOIN in SQL is used to combine rows from two or more tables based on a related column between them. The INNER JOIN keyword selects records that have matching values in both tables. If there is no match, the result is not included in the output.
+
+
+SELECT columns
+FROM table1
+INNER JOIN table2
+ON table1.column = table2.column;
+Explanation
+SELECT columns: Specifies the columns you want to retrieve.
+FROM table1: The primary table from which you want to retrieve data.
+INNER JOIN table2: The secondary table you are joining with the primary table.
+ON table1.column = table2.column: The condition that specifies the relationship between columns of the two tables.
+Example with User and Tree Tables
+Let's use your User and Tree tables to demonstrate how INNER JOIN works.
+
+Tables
+User Table
+
+id	name	created_on
+1	Ash	2024-05-01 00:00:00
+2	Misty	2024-05-02 00:00:00
+3	Brock	2024-05-03 00:00:00
+Tree Table
+
+id	species	age	height	watered_on	planted_on	user_id
+1	Oak	1	3	2024-05-01 00:00:00	2024-05-01 00:00:00	1
+2	Maple	2	4	2024-05-01 00:00:00	2024-05-01 00:00:00	1
+3	Pine	3	5	2024-05-01 00:00:00	2024-05-01 00:00:00	2
+Inner Join Query
+Suppose we want to list all users along with the species of trees they have planted.
+
+sql
+Copy code
+SELECT User.name, Tree.species
+FROM User
+INNER JOIN Tree ON User.id = Tree.user_id;
+Result
+name	species
+Ash	Oak
+Ash	Maple
+Misty	Pine
+
+
