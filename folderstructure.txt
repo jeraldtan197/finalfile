@@ -27,3 +27,83 @@ to check , git remote -v
 to remove , git remote remove origin 
 to add git remote add origin (url)
 then push manually 
+
+
+res.locals is an object that is available in the response object in Express.js, which allows you to store and pass information throughout the lifecycle of a request. It is particularly useful for sharing data between middleware functions and route handlers without needing to pass it explicitly as parameters.
+
+When to Use res.locals
+Storing Data for Use in Multiple Middleware Functions: If you need to store data that will be used by multiple middleware functions or route handlers within the same request-response cycle.
+Sharing Information Between Middleware and Route Handlers: When you have middleware that retrieves or processes data that will be used later in a route handler.
+How to Use res.locals
+Setting Data in res.locals:
+You can set properties on res.locals in a middleware function.
+
+Accessing Data in res.locals:
+You can access the properties set in res.locals in subsequent middleware functions or the route handler.
+
+Example: Retrieving a Random User ID and Using res.locals
+Here's a complete example that demonstrates how to retrieve a random user ID from the database, store it in res.locals, and use it in a route handler.
+
+Step 1: Middleware to Retrieve a Random User ID
+First, create a middleware function to retrieve a random user ID and store it in res.locals.
+
+const pool = require('./database'); // Assuming you have a database module for querying
+
+module.exports.getRandomUserId = (req, res, next) => {
+  const query = 'SELECT id FROM User ORDER BY RAND() LIMIT 1';
+  
+  pool.query(query, (error, results) => {
+    if (error) {
+      console.error("Error retrieving random user ID:", error);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+    
+    if (results.length > 0) {
+      res.locals.randomUserId = results[0].id;
+      next();
+    } else {
+      res.status(404).json({ message: "No users found" });
+    }
+  });
+};
+
+Step 2: Route Handler Using res.locals
+Next, create a route handler that uses the random user ID stored in res.locals.
+
+
+module.exports.getUserData = (req, res) => {
+  const userId = res.locals.randomUserId;
+  
+  const query = 'SELECT * FROM User WHERE id = ?';
+  
+  pool.query(query, [userId], (error, results) => {
+    if (error) {
+      console.error("Error retrieving user data:", error);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+    
+    if (results.length > 0) {
+      res.status(200).json(results[0]);
+    } else {
+      res.status(404).json({ message: "User not found" });
+    }
+  });
+};
+
+Step 3: Setting Up Routes
+Finally, set up your routes to use the middleware and route handler.
+
+const express = require('express');
+const router = express.Router();
+const getRandomUserId = require('./middleware').getRandomUserId;
+const getUserData = require('./controller').getUserData;
+
+router.get('/random-user', getRandomUserId, getUserData);
+
+module.exports = router;
+
+
+Summary
+Setting Data: Use res.locals in a middleware function to store data that you want to pass along the request-response cycle.
+Accessing Data: Access the stored data in subsequent middleware functions or route handlers.
+Example Use Case: Retrieving a random user ID from the database and using it in a route handler.
